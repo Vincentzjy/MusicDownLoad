@@ -1,0 +1,4 @@
+# MusicDownLoad
+六大平台音乐下载
+需要有python环境支持，firefox浏览器支持
+有能力的也可以改变代码使用chrome支持
