@@ -1,5 +1,3 @@
-from selenium import webdriver
-from selenium.webdriver.support.wait import WebDriverWait
 import requests
 import os
 class Migu():
@@ -8,39 +6,34 @@ class Migu():
         self.names = []
         self.singers = []
         self.download_urls = []
+        self.exts = []
     def get_urls(self):
-        options = webdriver.FirefoxOptions()
-        options.add_argument('--headless')
-        browser = webdriver.Firefox(firefox_options=options)
-        wait = WebDriverWait(browser, 10)
-        url = 'https://m.music.migu.cn/v3/search?keyword={}'.format(self.key)
-        browser.get(url)
-        browser.implicitly_wait(5)
-        name = '.left h4'
-        singer = 'name_gs'
-        music_url = 'play_1'
-        def index_music_name(name):
-            items = browser.find_elements_by_css_selector(name)
-            datas = []
-            for item in items:
-                datas.append(item.text)
-            return datas
-        def index_music_singer(singer):
-            items = browser.find_elements_by_class_name(singer)
-            datas = []
-            for item in items:
-                datas.append(item.text)
-            return datas
-        def index_music_url(music_url):
-            items = browser.find_elements_by_class_name(music_url)
-            datas = []
-            for item in items:
-                datas.append(item.get_attribute('src'))
-            return datas
-        self.names = index_music_name(name)
-        self.singers = index_music_singer(singer)
-        self.download_urls = index_music_url(music_url)
-        browser.close()
+        search_url = 'http://pd.musicapp.migu.cn/MIGUM3.0/v1.0/content/search_all.do'
+        player_url = 'https://app.pd.nf.migu.cn/MIGUM3.0/v1.0/content/sub/listenSong.do?channel=mx&copyrightId={copyrightId}&contentId={contentId}&toneFlag={toneFlag}&resourceType={resourceType}&userId=15548614588710179085069&netType=00'
+        params = {
+					'ua': 'Android_migu',
+					'version': '5.0.1',
+					'text': self.key,
+					'pageNo': '1',
+					'pageSize': '30',
+					'searchSwitch': '{"song":1,"album":0,"singer":0,"tagSong":0,"mvSong":0,"songlist":0,"bestShow":1}',
+				}
+        headers = {
+            'Referer': 'https://m.music.migu.cn/',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36 Edg/84.0.522.44'
+            }
+        s = requests.Session()
+        response = s.get(search_url, headers=headers, params=params)
+        items = response.json()['songResultData']['result']
+        for item in items:
+            for rate in sorted(item.get('rateFormats', []), key=lambda x: int(x['size']), reverse=True):
+                ext = '.flac' if rate.get('formatType') == 'SQ' else '.mp3'
+                self.exts.append(ext)
+                self.download_urls.append(player_url.format(copyrightId=item['copyrightId'], contentId=item['contentId'], toneFlag=rate['formatType'], resourceType=rate['resourceType']))
+                break
+            self.names.append(item['name'])
+            for i in item['singers']:
+                self.singers.append(i['name'])
 def open_url(img_url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36 Edg/84.0.522.44'
@@ -49,8 +42,8 @@ def open_url(img_url):
     if response.status_code == 200:
         return response.content
     return None
-def download(key, url, folder):
+def download(key, url, folder, ext):
     os.chdir(folder)
-    with open(key + url[-4:], 'wb') as f:
+    with open(key + ext, 'wb') as f:
         data = open_url(url)
         f.write(data)

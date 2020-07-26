@@ -11,11 +11,13 @@ import kugou
 import migu
 names = []
 download_urls = []
+exts = []
 def index():
     infor = combo.get()
     key = entry1.get()
     global download_urls
     global names
+    global exts
     text.delete(0, END)
     text.insert(END, '正在搜索......')
     text.see(END)
@@ -68,6 +70,7 @@ def index():
             text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i])
         download_urls = music.download_urls
         names = music.names
+        exts = music.exts
 def down_load():
     infor = combo.get()
     key = entry1.get()
@@ -119,7 +122,7 @@ def down_load():
             text.insert(END,'下载失败')
     if infor == '咪咕':
         try:
-            migu.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
+            migu.download(names[int(number) - 1], download_urls[int(number) - 1], folder, exts[int(number) - 1])
             text.delete(0, END)
             text.insert(END,'下载成功')
         except:
