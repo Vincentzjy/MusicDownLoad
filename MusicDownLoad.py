@@ -14,8 +14,8 @@ download_urls = []
 exts = []
 def index():
     infor = combo.get()
+    key = entry1.get()
     if infor in ['QQ', '网易云', '千千', '酷我', '酷狗', '咪咕']:
-        key = entry1.get()
         if key != '':
             global download_urls
             global names
@@ -78,7 +78,7 @@ def down_load():
     if infor in ['QQ', '网易云', '千千', '酷我', '酷狗', '咪咕']:
         key = entry1.get()
         number = entry2.get()
-        if number > '0' and number < str(len(names)):
+        if int(number) > 0 and int(number) < len(names):
             text.delete(0, END)
             folder = tkinter.filedialog.askdirectory()
             text.insert(END, '正在下载......')
