@@ -5,6 +5,7 @@ class Migu():
         self.key = key
         self.names = []
         self.singers = []
+        self.albums = []
         self.download_urls = []
         self.exts = []
     def get_urls(self):
@@ -34,6 +35,11 @@ class Migu():
             self.names.append(item['name'])
             for i in item['singers']:
                 self.singers.append(i['name'])
+            try:
+                for j in item['albums']:
+                    self.albums.append(j['name'])
+            except:
+                self.albums.append('')
 def open_url(img_url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36 Edg/84.0.522.44'

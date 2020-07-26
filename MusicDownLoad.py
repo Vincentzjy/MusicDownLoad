@@ -15,120 +15,121 @@ exts = []
 def index():
     infor = combo.get()
     key = entry1.get()
-    global download_urls
-    global names
-    global exts
-    text.delete(0, END)
-    text.insert(END, '正在搜索......')
-    text.see(END)
-    text.update()
-    if infor == 'QQ':
-        music = QQ.QQ_music(key)
-        music.get_urls()
+    if key != '':
+        global download_urls
+        global names
+        global exts
         text.delete(0, END)
-        for i in range(len(music.names) - 1):
-            text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
-        download_urls = music.download_urls
-        names = music.names
-    if infor == '网易云':
-        music = Cloud.Cloud(key)
-        music.get_urls()
-        text.delete(0, END)
-        for i in range(len(music.names) - 1):
-            text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
-        download_urls = music.download_urls
-        names = music.names
-    if infor == '千千':
-        music = qianqian.Qian(key)
-        music.get_urls()
-        text.delete(0, END)
-        for i in range(len(music.names) - 1):
-            text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i])
-        download_urls = music.download_urls
-        names = music.names
-    if infor == '酷我':
-        music = kuwo.Kuwo(key)
-        music.get_urls()
-        text.delete(0, END)
-        for i in range(len(music.names) - 1):
-            text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
-        download_urls = music.download_urls
-        names = music.names
-    if infor == '酷狗':
-        music = kugou.Kugou(key)
-        music.get_urls()
-        text.delete(0, END)
-        for i in range(len(music.names) - 1):
-            text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i])
-        download_urls = music.download_urls
-        names = music.names
-    if infor == '咪咕':
-        music = migu.Migu(key)
-        music.get_urls()
-        text.delete(0, END)
-        for i in range(len(music.names) - 1):
-            text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i])
-        download_urls = music.download_urls
-        names = music.names
-        exts = music.exts
+        text.insert(END, '正在搜索......')
+        text.see(END)
+        text.update()
+        if infor == 'QQ':
+            music = QQ.QQ_music(key)
+            music.get_urls()
+            text.delete(0, END)
+            for i in range(len(music.names) - 1):
+                text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
+            download_urls = music.download_urls
+            names = music.names
+        if infor == '网易云':
+            music = Cloud.Cloud(key)
+            music.get_urls()
+            text.delete(0, END)
+            for i in range(len(music.names) - 1):
+                text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
+            download_urls = music.download_urls
+            names = music.names
+        if infor == '千千':
+            music = qianqian.Qian(key)
+            music.get_urls()
+            text.delete(0, END)
+            for i in range(len(music.names) - 1):
+                text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i])
+            download_urls = music.download_urls
+            names = music.names
+        if infor == '酷我':
+            music = kuwo.Kuwo(key)
+            music.get_urls()
+            text.delete(0, END)
+            for i in range(len(music.names) - 1):
+                text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
+            download_urls = music.download_urls
+            names = music.names
+        if infor == '酷狗':
+            music = kugou.Kugou(key)
+            music.get_urls()
+            text.delete(0, END)
+            for i in range(len(music.names) - 1):
+                text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i])
+            download_urls = music.download_urls
+            names = music.names
+        if infor == '咪咕':
+            music = migu.Migu(key)
+            music.get_urls()
+            text.delete(0, END)
+            for i in range(len(music.names) - 1):
+                text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i])
+            download_urls = music.download_urls
+            names = music.names
+            exts = music.exts
 def down_load():
     infor = combo.get()
     key = entry1.get()
     number = entry2.get()
-    text.delete(0, END)
-    folder = tkinter.filedialog.askdirectory()
-    text.insert(END, '正在下载......')
-    text.see(END)
-    text.update()
-    if infor == 'QQ':
-        try:
-            QQ.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
-            text.delete(0, END)
-            text.insert(END,'下载成功')
-        except:
-            text.delete(0, END)
-            text.insert(END,'下载失败')
-    if infor == '网易云':
-        try:
-            Cloud.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
-            text.delete(0, END)
-            text.insert(END,'下载成功')
-        except:
-            text.delete(0, END)
-            text.insert(END,'下载失败')
-    if infor == '千千':
-        try:
-            qianqian.download(names[int(number) - 1], download_urls[int(number) - 1].split('/')[-1], folder)
-            text.delete(0, END)
-            text.insert(END,'下载成功')
-        except:
-            text.delete(0, END)
-            text.insert(END,'下载失败')
-    if infor == '酷我':
-        try:
-            kuwo.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
-            text.delete(0, END)
-            text.insert(END,'下载成功')
-        except:
-            text.delete(0, END)
-            text.insert(END,'下载失败')
-    if infor == '酷狗':
-        try:
-            kugou.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
-            text.delete(0, END)
-            text.insert(END,'下载成功')
-        except:
-            text.delete(0, END)
-            text.insert(END,'下载失败')
-    if infor == '咪咕':
-        try:
-            migu.download(names[int(number) - 1], download_urls[int(number) - 1], folder, exts[int(number) - 1])
-            text.delete(0, END)
-            text.insert(END,'下载成功')
-        except:
-            text.delete(0, END)
-            text.insert(END,'下载失败')
-
+    if number > '0' and number < str(len(names)):
+        text.delete(0, END)
+        folder = tkinter.filedialog.askdirectory()
+        text.insert(END, '正在下载......')
+        text.see(END)
+        text.update()
+        if infor == 'QQ':
+            try:
+                QQ.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
+                text.delete(0, END)
+                text.insert(END,'下载成功')
+            except:
+                text.delete(0, END)
+                text.insert(END,'下载失败')
+        if infor == '网易云':
+            try:
+                Cloud.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
+                text.delete(0, END)
+                text.insert(END,'下载成功')
+            except:
+                text.delete(0, END)
+                text.insert(END,'下载失败')
+        if infor == '千千':
+            try:
+                qianqian.download(names[int(number) - 1], download_urls[int(number) - 1].split('/')[-1], folder)
+                text.delete(0, END)
+                text.insert(END,'下载成功')
+            except:
+                text.delete(0, END)
+                text.insert(END,'下载失败')
+        if infor == '酷我':
+            try:
+                kuwo.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
+                text.delete(0, END)
+                text.insert(END,'下载成功')
+            except:
+                text.delete(0, END)
+                text.insert(END,'下载失败')
+        if infor == '酷狗':
+            try:
+                kugou.download(names[int(number) - 1], download_urls[int(number) - 1], folder)
+                text.delete(0, END)
+                text.insert(END,'下载成功')
+            except:
+                text.delete(0, END)
+                text.insert(END,'下载失败')
+        if infor == '咪咕':
+            try:
+                migu.download(names[int(number) - 1], download_urls[int(number) - 1], folder, exts[int(number) - 1])
+                text.delete(0, END)
+                text.insert(END,'下载成功')
+            except:
+                text.delete(0, END)
+                text.insert(END,'下载失败')
 root = Tk()
 root.title('音乐下载器')
 root.geometry('400x700')
