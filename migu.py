@@ -16,7 +16,7 @@ class Migu():
 					'version': '5.0.1',
 					'text': self.key,
 					'pageNo': '1',
-					'pageSize': '30',
+					'pageSize': '31',
 					'searchSwitch': '{"song":1,"album":0,"singer":0,"tagSong":0,"mvSong":0,"songlist":0,"bestShow":1}',
 				}
         headers = {
@@ -33,11 +33,17 @@ class Migu():
                 self.download_urls.append(player_url.format(copyrightId=item['copyrightId'], contentId=item['contentId'], toneFlag=rate['formatType'], resourceType=rate['resourceType']))
                 break
             self.names.append(item['name'])
+            t = ''
+            k = ''
             for i in item['singers']:
-                self.singers.append(i['name'])
+                t += i['name']
+                t = t + '/'
+            self.singers.append(t)
             try:
                 for j in item['albums']:
-                    self.albums.append(j['name'])
+                    k += j['name']
+                    k = k + '/'
+                self.albums.append(k)
             except:
                 self.albums.append('')
 def open_url(img_url):

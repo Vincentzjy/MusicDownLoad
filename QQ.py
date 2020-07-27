@@ -9,43 +9,34 @@ class QQ_music():
         self.names = []
         self.singers = []
         self.albums = []
-        self.times = []
         self.download_urls = []
     def get_urls(self):
+        url = 'https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&searchid=62949948419074461&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=10&w={}&g_tk_new_20200303=5381&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=0'.format(self.key)
+        headers = {
+            'referer': 'https://y.qq.com/portal/search.html',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36'
+        }
+        s = requests.Session()
+        response = s.get(url, headers=headers)
+        items = response.json()['data']['song']['list']
+        for item in items:
+            t = ''
+            self.names.append(item['name'])
+            for i in item['singer']:
+                t += i['name']
+                t = t + '/'
+            self.singers.append(t)
+            self.albums.append(item['album']['name'])
+            self.download_urls.append('https://y.qq.com/n/yqq/song/' + item['mid'] + '.html')
+def download_url(url):
+    try:
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        browser = webdriver.Chrome(chrome_options=options) 
+    except:
         options = webdriver.FirefoxOptions()
         options.add_argument('--headless')
-        browser = webdriver.Firefox(firefox_options=options)
-        wait = WebDriverWait(browser, 10)
-        url = 'https://y.qq.com/portal/search.html#page=1&searchid=1&remoteplace=txt.yqq.top&t=song&w={}'.format(self.key)
-        browser.get(url)
-        browser.implicitly_wait(5)
-        name = 'js_song'
-        singer = 'singer_name'
-        album = 'album_name'
-        song_time = 'songlist__time'
-        music_url = 'js_song'
-        def index_music(infor):
-            items = browser.find_elements_by_class_name(infor)
-            datas = []
-            for item in items:
-                datas.append(item.text)
-            return datas
-        def index_music_url(infor):
-            items = browser.find_elements_by_class_name(infor)
-            datas = []
-            for item in items:
-                datas.append(item.get_attribute('href'))
-            return datas
-        self.names = index_music(name)
-        self.singers = index_music(singer)
-        self.albums = index_music(album)
-        self.times = index_music(song_time)
-        self.download_urls = index_music_url(music_url)
-        browser.close()
-def download_url(url):
-    options = webdriver.FirefoxOptions()
-    options.add_argument('--headless')
-    browser = webdriver.Firefox(firefox_options=options)
+        browser = webdriver.Firefox(firefox_options=options)    
     wait = WebDriverWait(browser, 10)
     browser.get('http://www.douqq.com/qqmusic/')
     browser.implicitly_wait(5)

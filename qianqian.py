@@ -12,9 +12,14 @@ class Qian():
         self.albums = []
         self.download_urls = []
     def get_urls(self):
-        options = webdriver.FirefoxOptions()
-        options.add_argument('--headless')
-        browser = webdriver.Firefox(firefox_options=options)
+        try:
+            options = webdriver.ChromeOptions()
+            options.add_argument('--headless')
+            browser = webdriver.Chrome(chrome_options=options) 
+        except:
+            options = webdriver.FirefoxOptions()
+            options.add_argument('--headless')
+            browser = webdriver.Firefox(firefox_options=options)
         wait = WebDriverWait(browser, 10)
         url = 'http://music.taihe.com/'
         browser.get(url)

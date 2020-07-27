@@ -29,7 +29,7 @@ def index():
                 music.get_urls()
                 text.delete(0, END)
                 for i in range(len(music.names) - 1):
-                    text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
+                    text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i])
                 download_urls = music.download_urls
                 names = music.names
             elif infor == '网易云':
@@ -37,7 +37,7 @@ def index():
                 music.get_urls()
                 text.delete(0, END)
                 for i in range(len(music.names) - 1):
-                    text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i] + '/' + music.times[i])
+                    text.insert(END, str(i + 1) + '/' + music.names[i] + '/' + music.singers[i] + '/' + music.albums[i])
                 download_urls = music.download_urls
                 names = music.names
             elif infor == '千千':

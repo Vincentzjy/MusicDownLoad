@@ -15,7 +15,14 @@ class Kugou():
         params = {
             'keyword': self.key,
 		    'page': '1',
-		    'pagesize': '30'
+		    'pagesize': '31',
+            'userid': '-1',
+            'clientver': '',
+            'platform': 'WebFilter',
+            'tag': 'em',
+            'filter': '',
+            'iscorrection': '1',
+            'privilege_filter': '0'
             }
         url = 'http://songsearch.kugou.com/song_search_v2'
         url2 = 'https://wwwapi.kugou.com/yy/index.php'
